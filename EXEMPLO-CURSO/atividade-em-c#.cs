@@ -53,13 +53,9 @@ namespace Dia1
                 }
                   else if(cadastro == 2)
                 {
-                    
+                     break;
                 }
-                while (true)
-                { Console.WriteLine("olá,mundo!");
-                    break;
-                }
-                    
+                       
                 
                 
             }
