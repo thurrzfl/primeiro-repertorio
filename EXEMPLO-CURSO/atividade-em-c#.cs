@@ -64,7 +64,7 @@ namespace Dia1
                     break;
                 }
                     
-                
+                console.writeline("olá,mundo!");
                 
             }
         }    
