@@ -53,24 +53,15 @@ namespace Dia1
                 }
                   else if(cadastro == 2)
                 {
-                    
-                }
-                while (true)
-                {
-                    for(int i = 0; i <20; i++)
-                    {
-                        Console.WriteLine(i);
-                    }
                     break;
                 }
-                    console.writeline("olá,mundo"); 
+              
+                }
+                  
                 
                 
             }
         }    
-
-        
-
-        
-    }
+    
+    
 }
