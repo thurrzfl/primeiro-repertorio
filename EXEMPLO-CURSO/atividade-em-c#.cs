@@ -56,21 +56,13 @@ namespace Dia1
                     
                 }
                 while (true)
-                {
-                    for(int i = 0; i <20; i++)
-                    {
-                        Console.WriteLine(i);
-                    }
+                { Console.WriteLine("olá,mundo!");
                     break;
                 }
                     
-                console.writeline("olá,mundo!");
+                
                 
             }
-        }    
-
-        
-
-        
+        }
     }
 }
