@@ -9,7 +9,6 @@ namespace Dia1
         {
              int num1 = 20;
         string nome;
-        double n1 = 50000000.0000;
         float n2= 3.14f;
         Console.WriteLine("digite seu nome:");
         nome = Console.ReadLine();
