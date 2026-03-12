@@ -7,9 +7,8 @@ namespace Dia1
     {
         static void Main()
         {
-             int num1 = 20;
+        int num1 = 20;
         string nome;
-        float n2= 3.14f;
         Console.WriteLine("digite seu nome:");
         nome = Console.ReadLine();
         if(nome == "arthur")
