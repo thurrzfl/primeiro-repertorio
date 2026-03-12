@@ -7,8 +7,8 @@ namespace Calculadora
     {
         static void Main()
         {  
-           double num1;
-           double num2; 
+          double num1;
+          double num2;
           Console.WriteLine("Digite o primeiro número\n");
           num1 = double.Parse (Console.ReadLine());
           Console.WriteLine("Digite segundo número\n");
