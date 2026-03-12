@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
 namespace Dia1
 {
@@ -48,15 +49,14 @@ namespace Dia1
                     }
                     else
                     {
-                        Console.WriteLine("VOCÊ NÃO TEM ACESSO POR SER DE MENOR");
+                        Console.WriteLine("VOCÊ NÃO TEM ACESSO POR SER DE  ");
                     }
                 }
                   else if(cadastro == 2)
                 {
                      break;
                 }
-                       
-                
+                    
                 
             }
         }
