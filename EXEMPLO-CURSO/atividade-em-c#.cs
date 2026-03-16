@@ -11,14 +11,7 @@ namespace Dia1
         string nome;
         Console.WriteLine("digite seu nome:");
         nome = Console.ReadLine();
-        if(nome == "arthur")
-            {
-             Console.WriteLine("olá é você msm arthur\n");
-            }
-            else
-            {
-                Console.WriteLine("não é o arthur, vocêa não acesso");
-            }
+     
             Console.WriteLine("agora me dia sua idade:");
             num1 = int.Parse(Console.ReadLine());
             if(num1 >= 18)
