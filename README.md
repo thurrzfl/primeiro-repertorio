@@ -1,6 +1,6 @@
 # olá mundo!
 primeiro reporsitorio do curso de git e github
 
-criado urante o curso 
+criado durante o curso 
 
 Alteração nova pelo site!
