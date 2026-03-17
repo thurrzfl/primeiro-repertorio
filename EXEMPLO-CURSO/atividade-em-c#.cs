@@ -7,7 +7,8 @@ namespace Dia1
     {
         static void Main()
         {
-        //atividade teste.    
+        //atividade teste.
+        string nome;
         int num1;
         string nome;
         Console.WriteLine("digite seu nome:");
