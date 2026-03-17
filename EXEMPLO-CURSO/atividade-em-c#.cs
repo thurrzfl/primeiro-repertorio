@@ -7,7 +7,7 @@ namespace Dia1
     {
         static void Main()
         {
-        int num1 = 20;
+        int num1,num2;
         string nome;
         Console.WriteLine("digite seu nome:");
         nome = Console.ReadLine();
