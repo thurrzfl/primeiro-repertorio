@@ -3,9 +3,10 @@ namespace AtiviadeDaFaculdade;
 class Progam
 {
     static void Main()
-    {     foreach (var item in carro)
+    {
+        for(int i = 1; i<=200; i++)
         {
-            Console.WriteLine(item);
+           Console.WriteLine("" + i);
         }
     }
 
