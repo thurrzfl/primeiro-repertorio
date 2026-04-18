@@ -42,7 +42,7 @@ namespace Dia1
                     }
                     else
                     {
-                        Console.WriteLine("VOCÊ NÃO TEM ACESSO POR SER DE  ");
+                        Console.WriteLine("VOCÊ NÃO TEM ACESSO POR SER DE MENOR DE IDADE");
                     }
                 }
                   else if(cadastro == 2)

@@ -7,16 +7,30 @@ namespace Calculadora
     {
         static void Main()
         {  
-        
-        Console.WriteLine("Você Deseja Realizar uma compra? 's' se sim 'n' se não");
+           double totalvalor = 0;
+           bool continuar = true;
+           Console.WriteLine("aperte a tecla 'enter' para iniciar suas compras ou digite 'sair' para finalizar suas compras");
+           while(continuar)
+           { 
+    
+             var sair = Console.ReadLine();
+            if (sair == "sair")
+                { Console.WriteLine("obrigado por visitar nossa loja! sua compra total foi de R$ " + totalvalor);
+                    break;
+                }
+
+        Console.WriteLine("Você Deseja Realizar uma compra? se sim, se não, digite sair");
         string resposta = Console.ReadLine();
-        if(resposta == "s")
+        if(resposta == "sim")
             {
-                Console.WriteLine("digite qual Alimento você deseja comprar");
+                Console.WriteLine("digite qual Alimento você deseja comprar?\n");
+                Console.WriteLine("Temos os seguintes produtos:\n");
+                Console.WriteLine("1-Arroz\n2-Feijão\n3-Macarrão\n");
+                
                 string produto = Console.ReadLine();
                 switch (produto)
                 {
-                    case "arroz":
+                    case "1":
                         Console.WriteLine("você deseja comprar o arroz em fardo ou unidade?");
                         string resposta2 = Console.ReadLine();
                         if(resposta2 == "fardo")
@@ -27,7 +41,11 @@ namespace Calculadora
                             int quantidadeFardo = Convert.ToInt32(Console.ReadLine());
                             double totalFardo = precoFardo * quantidadeFardo;
                             Console.WriteLine("O total a pagar é R$ " + totalFardo);
+                            totalvalor += totalFardo;
+                            Console.WriteLine("Deseja comprar mais algum produto? se sim, digite 'sim', se não, digite 'sair'");
                         }
+        
+                     
                         else if(resposta2 == "unidade")
                         {
                             Console.WriteLine("Quantas unidades você deseja comprar?");
@@ -35,10 +53,12 @@ namespace Calculadora
                             double precoUnidade = 5.00;
                             double totalUnidade = precoUnidade * quantidadeUnidade;
                             Console.WriteLine("O total a pagar é R$ " + totalUnidade);
+                            totalvalor += totalUnidade;
+                            Console.WriteLine("Deseja comprar mais algum produto? se sim, digite 'sim', se não, digite 'sair'\n");
                         }
                         break;
-                    case "feijão":
-                        Console.WriteLine("voc~e deseja comprar o feijãoo em fardo ou unidade?");
+                    case "2":
+                        Console.WriteLine("vocêdeseja comprar o feijão em fardo ou unidade?");
                         string resposta3 = Console.ReadLine();
                         if(resposta3 == "fardo")
                         {
@@ -48,6 +68,7 @@ namespace Calculadora
                             int quantidadeFardo = Convert.ToInt32(Console.ReadLine());
                             double totalFardo = precoFardo * quantidadeFardo;
                             Console.WriteLine("O total a pagar é R$ " + totalFardo);
+                            totalvalor += totalFardo;
                         }
                         else if(resposta3 == "unidade")
                         {
@@ -56,10 +77,11 @@ namespace Calculadora
                             double precoUnidade = 7.00;
                             double totalUnidade = precoUnidade * quantidadeUnidade;
                             Console.WriteLine("O total a pagar é R$ " + totalUnidade);
+                            totalvalor += totalUnidade;
                         }
 
                         break;
-                    case "macarrão":
+                    case "3":
                         Console.WriteLine("você deseja comprar o macarrão em fardo ou unidade?");
                         string resposta4 = Console.ReadLine();
                         if(resposta4 == "fardo")
@@ -70,6 +92,7 @@ namespace Calculadora
                             int quantidadeFardo = Convert.ToInt32(Console.ReadLine());
                             double totalFardo = precoFardo * quantidadeFardo;
                             Console.WriteLine("O total a pagar é R$ " + totalFardo);
+                            totalvalor += totalFardo;
                         }
                         else if(resposta4 == "unidade")
                         {
@@ -78,12 +101,13 @@ namespace Calculadora
                             double precoUnidade = 3.00;
                             double totalUnidade = precoUnidade * quantidadeUnidade;
                             Console.WriteLine("O total a pagar é R$ " + totalUnidade);
+                            totalvalor += totalUnidade;
                         }
                         break;
                     default:
                         Console.WriteLine("Produto não encontrado");
                         break;
-                    
+                    }
                 }
             }    
           
