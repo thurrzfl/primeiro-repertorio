@@ -19,13 +19,13 @@ namespace Calculadora
                     break;
                 }
 
-        Console.WriteLine("Você Deseja Realizar uma compra? se sim, se não, digite sair");
+        Console.WriteLine("Você Deseja Realizar uma compra? se sim digite 'sim', se não digite 'sair'");
         string resposta = Console.ReadLine();
         if(resposta == "sim")
             {
                 Console.WriteLine("digite qual Alimento você deseja comprar?\n");
                 Console.WriteLine("Temos os seguintes produtos:\n");
-                Console.WriteLine("1-Arroz\n2-Feijão\n3-Macarrão\n");
+                Console.WriteLine("1-Arroz\n2-Feijão\n3-Macarrão\n4-Carne de boi\n");
                 
                 string produto = Console.ReadLine();
                 switch (produto)
@@ -103,6 +103,14 @@ namespace Calculadora
                             Console.WriteLine("O total a pagar é R$ " + totalUnidade);
                             totalvalor += totalUnidade;
                         }
+                        break; 
+                        case "4":
+                        Console.WriteLine("O preço da carne de boi é R$ 20,00 por kg");
+                        Console.WriteLine("Quantos kg de carne de boi você deseja comprar?");
+                        int quantidadeCarneBoi = Convert.ToInt32(Console.ReadLine());
+                        double totalCarneBoi = 20.00 * quantidadeCarneBoi;
+                        Console.WriteLine("O total a pagar é R$ " + totalCarneBoi);
+                        totalvalor += totalCarneBoi;
                         break;
                     default:
                         Console.WriteLine("Produto não encontrado");
