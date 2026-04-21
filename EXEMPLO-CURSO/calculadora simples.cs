@@ -9,13 +9,13 @@ namespace Calculadora
         {  
            double totalvalor = 0;
            bool continuar = true;
-           Console.WriteLine("aperte a tecla 'enter' para iniciar suas compras ou digite 'sair' para finalizar suas compras");
+           Console.WriteLine("Aperte qualquer tecla para iniciar suas compras ou digite 'sair' para finalizar suas compras");
            while(continuar)
            { 
     
              var sair = Console.ReadLine();
             if (sair == "sair")
-                { Console.WriteLine("obrigado por visitar nossa loja! sua compra total foi de R$ " + totalvalor);
+                { Console.WriteLine("Obrigado por visitar nossa loja! sua compra total foi de R$ " + totalvalor);
                     break;
                 }
 
@@ -23,7 +23,7 @@ namespace Calculadora
         string resposta = Console.ReadLine();
         if(resposta == "sim")
             {
-                Console.WriteLine("digite qual Alimento você deseja comprar?\n");
+                Console.WriteLine("Digite qual Alimento você deseja comprar?\n");
                 Console.WriteLine("Temos os seguintes produtos:\n");
                 Console.WriteLine("1-Arroz\n2-Feijão\n3-Macarrão\n4-Carne de boi\n5-saco de gelo\n6-água mineral\n-7-refrigerante\n8-suco\n9-pão\n10-frutas\n");
                 
@@ -31,7 +31,7 @@ namespace Calculadora
                 switch (produto)
                 {
                     case "1":
-                        Console.WriteLine("você deseja comprar o arroz em fardo ou unidade?");
+                        Console.WriteLine("Você deseja comprar o arroz em fardo ou unidade?");
                         string resposta2 = Console.ReadLine();
                         if(resposta2 == "fardo")
                         {
@@ -58,7 +58,7 @@ namespace Calculadora
                         }
                         break;
                     case "2":
-                        Console.WriteLine("vocêdeseja comprar o feijão em fardo ou unidade?");
+                        Console.WriteLine("Você deseja comprar o feijão em fardo ou unidade?");
                         string resposta3 = Console.ReadLine();
                         if(resposta3 == "fardo")
                         {
@@ -82,7 +82,7 @@ namespace Calculadora
 
                         break;
                     case "3":
-                        Console.WriteLine("você deseja comprar o macarrão em fardo ou unidade?");
+                        Console.WriteLine("Você deseja comprar o macarrão em fardo ou unidade?");
                         string resposta4 = Console.ReadLine();
                         if(resposta4 == "fardo")
                         {
@@ -119,6 +119,7 @@ namespace Calculadora
                         double totalSacoGelo = 10.00 * quantidadeSacoGelo;
                         Console.WriteLine("O total a pagar é R$ " + totalSacoGelo);
                         totalvalor += totalSacoGelo;
+                        break;
                         case "6":
                         Console.WriteLine("O preço da água mineral é R$ 2,00");
                         Console.WriteLine("Quantas garrafas de água mineral você deseja comprar?");
@@ -126,6 +127,7 @@ namespace Calculadora
                         double totalAguaMineral = 2.00 * quantidadeAguaMineral;
                         Console.WriteLine("O total a pagar é R$ " + totalAguaMineral);
                         totalvalor += totalAguaMineral;
+                        break;
                         case "7":
                         Console.WriteLine("O preço do refrigerante 2L é R$ 5,00");
                         Console.WriteLine("Quantas garrafas de refrigerante você deseja comprar?");
@@ -133,12 +135,14 @@ namespace Calculadora
                         double totalRefrigerante = 5.00 * quantidadeRefrigerante;
                         Console.WriteLine("O total a pagar é R$ " + totalRefrigerante);
                         totalvalor += totalRefrigerante;
+                        break;
                         case "8":
+                        
                         Console.WriteLine("O preço do suco de laranja 1L é R$ 4,00");
                         Console.WriteLine("Quantas garrafas de suco de laranja você deseja comprar?");
                         int quantidadeSucoLaranja = Convert.ToInt32(Console.ReadLine());
                         double totalSucoLaranja = 4.00 * quantidadeSucoLaranja;
-                        console.WriteLine("O total a pagar é R$ " + totalSucoLaranja);
+                        Console.WriteLine("O total a pagar é R$ " + totalSucoLaranja);
                         totalvalor += totalSucoLaranja;
                         break;
                     default:
