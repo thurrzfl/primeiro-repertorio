@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshMart – Supermercado Virtual</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --verde:       #1a6b3a;
+      --verde-claro: #2e9155;
+      --verde-hover: #145530;
+      --verde-bg:    #eaf5ee;
+      --laranja:     #f07c2a;
+      --laranja-bg:  #fff4ec;
+      --cinza-bg:    #f6f7f5;
+      --cinza-card:  #ffffff;
+      --cinza-borda: #e0e4df;
+      --texto:       #1e2a1e;
+      --texto-muted: #6b7a6b;
+      --sombra:      0 4px 20px rgba(0,0,0,0.07);
+      --sombra-hover:0 8px 30px rgba(0,0,0,0.13);
+      --radius:      14px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--cinza-bg);
+      color: var(--texto);
+      min-height: 100vh;
+    }
+
+    /* =========================================
+       PÁGINA INICIAL
+    ========================================= */
+    #pagina-inicial {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #0f4026 0%, #1a6b3a 50%, #2e9155 100%);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    /* círculos decorativos de fundo */
+    #pagina-inicial::before,
+    #pagina-inicial::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.08;
+      background: white;
+    }
+    #pagina-inicial::before { width: 500px; height: 500px; top: -150px; left: -150px; }
+    #pagina-inicial::after  { width: 400px; height: 400px; bottom: -120px; right: -100px; }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      color: #b8f0cc;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 50px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .hero-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 7vw, 72px);
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero-titulo span { color: #7de8a0; }
+
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.75);
+      max-width: 460px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .hero-cards {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 16px 24px;
+      color: white;
+      font-size: 14px;
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-card .icon { font-size: 28px; display: block; margin-bottom: 6px; }
+
+    .btn-entrar {
+      background: white;
+      color: var(--verde);
+      border: none;
+      border-radius: 50px;
+      padding: 18px 48px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-entrar:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.3);
+    }
+
+    /* =========================================
+       PÁGINA DA LOJA
+    ========================================= */
+    #pagina-loja { display: none; }
+
+    /* --- HEADER --- */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--cinza-borda);
+      padding: 0 32px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .header-esq { display: flex; align-items: center; gap: 14px; }
+
+    .btn-voltar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--verde-bg);
+      color: var(--verde);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-voltar:hover { background: #d0ecd8; }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--verde);
+    }
+
+    .logo span { color: var(--laranja); }
+
+    .header-carrinho-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--verde);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .header-carrinho-btn:hover { background: var(--verde-hover); }
+
+    .badge-count {
+      background: var(--laranja);
+      color: white;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 1px 8px;
+      min-width: 22px;
+      text-align: center;
+    }
+
+    /* --- LAYOUT PRINCIPAL --- */
+    .loja-body {
+      display: grid;
+      grid-template-columns: 220px 1fr 320px;
+      gap: 0;
+      min-height: calc(100vh - 68px);
+    }
+
+    /* --- SIDEBAR CATEGORIAS --- */
+    .sidebar {
+      background: white;
+      border-right: 1px solid var(--cinza-borda);
+      padding: 28px 16px;
+      position: sticky;
+      top: 68px;
+      height: calc(100vh - 68px);
+      overflow-y: auto;
+    }
+
+    .sidebar h3 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--texto-muted);
+      margin-bottom: 14px;
+      padding-left: 10px;
+    }
+
+    .btn-cat {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 10px;
+      background: none;
+      color: var(--texto-muted);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      margin-bottom: 4px;
+      transition: all 0.18s;
+      text-align: left;
+    }
+
+    .btn-cat .cat-icon { font-size: 20px; }
+    .btn-cat:hover { background: var(--verde-bg); color: var(--verde); }
+    .btn-cat.ativo { background: var(--verde); color: white; }
+
+    /* --- ÁREA DE PRODUTOS --- */
+    .produtos-area {
+      padding: 28px 28px;
+      overflow-y: auto;
+    }
+
+    .produtos-area h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--texto);
+      margin-bottom: 6px;
+    }
+
+    .produtos-area .subtitulo {
+      font-size: 13px;
+      color: var(--texto-muted);
+      margin-bottom: 24px;
+    }
+
+    .secao-produtos { display: none; }
+    .secao-produtos.visivel { display: block; }
+
+    /* grade de cards de produto */
+    .produtos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .produto-card {
+      background: white;
+      border: 1px solid var(--cinza-borda);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      box-shadow: var(--sombra);
+      transition: box-shadow 0.2s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .produto-card:hover {
+      box-shadow: var(--sombra-hover);
+      transform: translateY(-3px);
+    }
+
+    .produto-emoji { font-size: 36px; text-align: center; }
+
+    .produto-nome {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--texto);
+    }
+
+    .produto-desc {
+      font-size: 12px;
+      color: var(--texto-muted);
+    }
+
+    .produto-preco {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--verde);
+    }
+
+    .produto-acao {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .produto-acao input {
+      flex: 1;
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid var(--cinza-borda);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      color: var(--texto);
+      background: var(--cinza-bg);
+    }
+
+    .produto-acao input:focus {
+      outline: none;
+      border-color: var(--verde-claro);
+      background: white;
+    }
+
+    .btn-add {
+      background: var(--verde);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 18px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.18s;
+      flex-shrink: 0;
+    }
+
+    .btn-add:hover { background: var(--verde-hover); }
+
+    /* produtos com submenu (ovos, arroz etc) */
+    .produto-card.tem-submenu { cursor: default; }
+
+    .btn-escolher {
+      width: 100%;
+      padding: 9px;
+      background: var(--verde-bg);
+      color: var(--verde);
+      border: 1px solid #b8ddc4;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .btn-escolher:hover { background: #d0ecd8; }
+
+    /* submenu expandido */
+    .submenu-expandido {
+      background: white;
+      border: 1px solid var(--cinza-borda);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 20px;
+      display: none;
+      box-shadow: var(--sombra);
+    }
+
+    .submenu-expandido.visivel { display: block; }
+
+    .submenu-titulo {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--texto-muted);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .sub-linha {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--cinza-borda);
+    }
+
+    .sub-linha:last-child { border-bottom: none; }
+
+    .sub-label { flex: 1; font-size: 14px; }
+    .sub-preco { font-weight: 700; color: var(--verde); font-size: 14px; min-width: 80px; text-align: right; }
+
+    .sub-linha input {
+      width: 54px;
+      padding: 7px;
+      border: 1px solid var(--cinza-borda);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      background: var(--cinza-bg);
+    }
+
+    .sub-linha button {
+      background: var(--verde);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .sub-linha button:hover { background: var(--verde-hover); }
+
+    /* --- PAINEL DO CARRINHO --- */
+    .painel-carrinho {
+      background: white;
+      border-left: 1px solid var(--cinza-borda);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 68px;
+      height: calc(100vh - 68px);
+      overflow: hidden;
+    }
+
+    .carrinho-header {
+      padding: 22px 24px 16px;
+      border-bottom: 1px solid var(--cinza-borda);
+    }
+
+    .carrinho-header h3 {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .carrinho-header p {
+      font-size: 12px;
+      color: var(--texto-muted);
+      margin-top: 2px;
+    }
+
+    .carrinho-itens {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 24px;
+    }
+
+    .carrinho-vazio {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--texto-muted);
+    }
+
+    .carrinho-vazio .icon-vazio { font-size: 44px; margin-bottom: 12px; }
+    .carrinho-vazio p { font-size: 14px; }
+
+    .item-carrinho {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--cinza-borda);
+    }
+
+    .item-info { flex: 1; }
+
+    .item-nome {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--texto);
+    }
+
+    .item-qtd {
+      font-size: 12px;
+      color: var(--texto-muted);
+      margin-top: 2px;
+    }
+
+    .item-preco {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--verde);
+      white-space: nowrap;
+    }
+
+    .item-remover {
+      background: none;
+      border: none;
+      color: #ccc;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: color 0.15s;
+    }
+
+    .item-remover:hover { color: #e53935; }
+
+    .carrinho-rodape {
+      padding: 18px 24px;
+      border-top: 1px solid var(--cinza-borda);
+      background: white;
+    }
+
+    .resumo-linha {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--texto-muted);
+      margin-bottom: 8px;
+    }
+
+    .resumo-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--texto);
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 2px solid var(--cinza-borda);
+    }
+
+    .resumo-total span:last-child { color: var(--verde); }
+
+    .btn-finalizar {
+      width: 100%;
+      padding: 15px;
+      margin-top: 16px;
+      background: var(--verde);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-finalizar:hover {
+      background: var(--verde-hover);
+      transform: translateY(-1px);
+    }
+
+    /* --- TELA DE SUCESSO --- */
+    #tela-sucesso {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #tela-sucesso.visivel { display: flex; }
+
+    .sucesso-card {
+      background: white;
+      border-radius: 20px;
+      padding: 48px 40px;
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+
+    .sucesso-icon { font-size: 64px; margin-bottom: 20px; }
+
+    .sucesso-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--texto);
+      margin-bottom: 10px;
+    }
+
+    .sucesso-card p { font-size: 14px; color: var(--texto-muted); margin-bottom: 8px; }
+
+    .sucesso-total {
+      background: var(--verde-bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 20px 0 28px;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--verde);
+    }
+
+    .sucesso-btns { display: flex; gap: 12px; }
+
+    .btn-nova-compra {
+      flex: 1;
+      padding: 13px;
+      background: var(--verde);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-nova-compra:hover { background: var(--verde-hover); }
+
+    .btn-voltar-inicio {
+      flex: 1;
+      padding: 13px;
+      background: none;
+      color: var(--texto-muted);
+      border: 1px solid var(--cinza-borda);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-voltar-inicio:hover { background: var(--cinza-bg); }
+
+    /* tela inicial de boas-vindas da loja */
+    #boas-vindas-loja {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      color: var(--texto-muted);
+      padding: 40px;
+    }
+
+    #boas-vindas-loja .icon { font-size: 60px; margin-bottom: 20px; }
+    #boas-vindas-loja h3 { font-size: 20px; color: var(--texto); margin-bottom: 10px; }
+    #boas-vindas-loja p { font-size: 14px; line-height: 1.7; }
+  </style>
+</head>
+<body>
+
+<!-- =================== PÁGINA INICIAL =================== -->
+<div id="pagina-inicial">
+  <div class="hero-badge">🌿 Frescos todo dia</div>
+  <h1 class="hero-titulo">Seu mercado,<br><span>do jeito certo</span></h1>
+  <p class="hero-sub">Alimentos frescos, bebidas geladas e produtos de limpeza — tudo num só lugar, com praticidade e preço justo.</p>
+
+  <div class="hero-cards">
+    <div class="hero-card"><span class="icon">🥦</span>Alimentos</div>
+    <div class="hero-card"><span class="icon">🥤</span>Bebidas</div>
+    <div class="hero-card"><span class="icon">🧹</span>Limpeza</div>
+  </div>
+
+  <button class="btn-entrar" onclick="entrarNaLoja()">Entrar na loja →</button>
+</div>
+
+<!-- =================== PÁGINA DA LOJA =================== -->
+<div id="pagina-loja">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-esq">
+      <button class="btn-voltar" onclick="voltarInicio()">← Início</button>
+      <div class="logo">Fresh<span>Mart</span></div>
+    </div>
+    <button class="header-carrinho-btn" onclick="rolarCarrinho()">
+      🛒 Carrinho <span class="badge-count" id="badge-count">0</span>
+    </button>
+  </div>
+
+  <div class="loja-body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <h3>Categorias</h3>
+      <button class="btn-cat" onclick="mostrarCategoria('alimentos', this)">
+        <span class="cat-icon">🥦</span> Alimentos
+      </button>
+      <button class="btn-cat" onclick="mostrarCategoria('bebidas', this)">
+        <span class="cat-icon">🥤</span> Bebidas
+      </button>
+      <button class="btn-cat" onclick="mostrarCategoria('limpeza', this)">
+        <span class="cat-icon">🧹</span> Limpeza
+      </button>
+    </div>
+
+    <!-- PRODUTOS -->
+    <div class="produtos-area" id="produtos-area">
+
+      <!-- boas-vindas antes de escolher categoria -->
+      <div id="boas-vindas-loja">
+        <div class="icon">🛍️</div>
+        <h3>Escolha uma categoria</h3>
+        <p>Selecione uma das categorias ao lado<br>para ver os produtos disponíveis.</p>
+      </div>
+
+      <!-- ALIMENTOS -->
+      <div id="alimentos" class="secao-produtos">
+        <h2>Alimentos</h2>
+        <p class="subtitulo">Frutas, verduras, proteínas e mercearia</p>
+
+        <div class="produtos-grid">
+
+          <div class="produto-card">
+            <div class="produto-emoji">🍌</div>
+            <div class="produto-nome">Banana</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 3,99/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-banana" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Banana', 3.99, 'qtd-banana', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🍎</div>
+            <div class="produto-nome">Maçã</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 6,99/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-maca" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Maçã', 6.99, 'qtd-maca', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🍊</div>
+            <div class="produto-nome">Laranja</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 4,49/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-laranja" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Laranja', 4.49, 'qtd-laranja', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🥬</div>
+            <div class="produto-nome">Alface</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 2,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-alface" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Alface', 2.99, 'qtd-alface', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🍅</div>
+            <div class="produto-nome">Tomate</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 4,99/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-tomate" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Tomate', 4.99, 'qtd-tomate', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🍋</div>
+            <div class="produto-nome">Limão</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 3,49/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-limao" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Limão', 3.49, 'qtd-limao', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🍇</div>
+            <div class="produto-nome">Uva</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 9,99/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-uva" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Uva', 9.99, 'qtd-uva', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🫐</div>
+            <div class="produto-nome">Mamão</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 5,99/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-mamao" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Mamão', 5.99, 'qtd-mamao', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🧅</div>
+            <div class="produto-nome">Cebola</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 3,49/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-cebola" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Cebola', 3.49, 'qtd-cebola', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🧄</div>
+            <div class="produto-nome">Alho</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 7,99/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-alho" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Alho', 7.99, 'qtd-alho', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🥔</div>
+            <div class="produto-nome">Batata</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 3,99/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-batata" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Batata', 3.99, 'qtd-batata', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🥕</div>
+            <div class="produto-nome">Cenoura</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 3,49/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-cenoura" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Cenoura', 3.49, 'qtd-cenoura', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🥒</div>
+            <div class="produto-nome">Pepino</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 2,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-pepino" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Pepino', 2.99, 'qtd-pepino', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🐟</div>
+            <div class="produto-nome">Peixe (Tilápia)</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 18,99/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-peixe" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Peixe Tilápia', 18.99, 'qtd-peixe', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🌾</div>
+            <div class="produto-nome">Aveia</div>
+            <div class="produto-desc">Por unidade (500g)</div>
+            <div class="produto-preco">R$ 6,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-aveia" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Aveia 500g', 6.99, 'qtd-aveia', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🫙</div>
+            <div class="produto-nome">Cuscuz</div>
+            <div class="produto-desc">Por unidade (500g)</div>
+            <div class="produto-preco">R$ 5,49/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-cuscuz" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Cuscuz 500g', 5.49, 'qtd-cuscuz', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🥩</div>
+            <div class="produto-nome">Frango</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 12,99/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-frango" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Frango', 12.99, 'qtd-frango', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🥩</div>
+            <div class="produto-nome">Carne Moída</div>
+            <div class="produto-desc">Preço por kg</div>
+            <div class="produto-preco">R$ 22,99/kg</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-carne" min="0.1" step="0.1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Carne Moída', 22.99, 'qtd-carne', 'kg')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🥛</div>
+            <div class="produto-nome">Leite</div>
+            <div class="produto-desc">Por unidade (1L)</div>
+            <div class="produto-preco">R$ 4,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-leite" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Leite', 4.99, 'qtd-leite', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card tem-submenu">
+            <div class="produto-emoji">🥚</div>
+            <div class="produto-nome">Ovos</div>
+            <div class="produto-desc">Unidade ou bandeja</div>
+            <div class="produto-preco">a partir R$ 0,79</div>
+            <button class="btn-escolher" onclick="toggleSubmenu('sub-ovos')">Ver opções ▾</button>
+          </div>
+
+          <div class="produto-card tem-submenu">
+            <div class="produto-emoji">🍚</div>
+            <div class="produto-nome">Arroz</div>
+            <div class="produto-desc">Unidade ou fardo</div>
+            <div class="produto-preco">a partir R$ 24,99</div>
+            <button class="btn-escolher" onclick="toggleSubmenu('sub-arroz')">Ver opções ▾</button>
+          </div>
+
+          <div class="produto-card tem-submenu">
+            <div class="produto-emoji">🫘</div>
+            <div class="produto-nome">Feijão</div>
+            <div class="produto-desc">Unidade ou fardo</div>
+            <div class="produto-preco">a partir R$ 8,99</div>
+            <button class="btn-escolher" onclick="toggleSubmenu('sub-feijao')">Ver opções ▾</button>
+          </div>
+
+          <div class="produto-card tem-submenu">
+            <div class="produto-emoji">🍝</div>
+            <div class="produto-nome">Macarrão</div>
+            <div class="produto-desc">Escolha a marca</div>
+            <div class="produto-preco">a partir R$ 3,49</div>
+            <button class="btn-escolher" onclick="toggleSubmenu('sub-macarrao')">Ver opções ▾</button>
+          </div>
+
+          <div class="produto-card tem-submenu">
+            <div class="produto-emoji">🧀</div>
+            <div class="produto-nome">Queijo</div>
+            <div class="produto-desc">Por kg ou pacote</div>
+            <div class="produto-preco">a partir R$ 7,99</div>
+            <button class="btn-escolher" onclick="toggleSubmenu('sub-queijo')">Ver opções ▾</button>
+          </div>
+
+        </div>
+
+        <!-- submenus -->
+        <div id="sub-ovos" class="submenu-expandido">
+          <div class="submenu-titulo">🥚 Ovos — como deseja comprar?</div>
+          <div class="sub-linha">
+            <span class="sub-label">Por unidade</span>
+            <span class="sub-preco">R$ 0,79/un</span>
+            <input type="number" id="qtd-ovo-un" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Ovos (unidade)', 0.79, 'qtd-ovo-un', 'un')">Adicionar</button>
+          </div>
+          <div class="sub-linha">
+            <span class="sub-label">Bandeja com 12</span>
+            <span class="sub-preco">R$ 8,49</span>
+            <input type="number" id="qtd-ovo-12" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Ovos Bandeja 12', 8.49, 'qtd-ovo-12', 'un')">Adicionar</button>
+          </div>
+          <div class="sub-linha">
+            <span class="sub-label">Bandeja com 30</span>
+            <span class="sub-preco">R$ 19,99</span>
+            <input type="number" id="qtd-ovo-30" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Ovos Bandeja 30', 19.99, 'qtd-ovo-30', 'un')">Adicionar</button>
+          </div>
+        </div>
+
+        <div id="sub-arroz" class="submenu-expandido">
+          <div class="submenu-titulo">🍚 Arroz — como deseja comprar?</div>
+          <div class="sub-linha">
+            <span class="sub-label">Saco 5kg</span>
+            <span class="sub-preco">R$ 24,99</span>
+            <input type="number" id="qtd-arroz-un" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Arroz saco 5kg', 24.99, 'qtd-arroz-un', 'un')">Adicionar</button>
+          </div>
+          <div class="sub-linha">
+            <span class="sub-label">Fardo (10 sacos)</span>
+            <span class="sub-preco">R$ 219,99</span>
+            <input type="number" id="qtd-arroz-fardo" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Arroz Fardo', 219.99, 'qtd-arroz-fardo', 'un')">Adicionar</button>
+          </div>
+        </div>
+
+        <div id="sub-feijao" class="submenu-expandido">
+          <div class="submenu-titulo">🫘 Feijão — como deseja comprar?</div>
+          <div class="sub-linha">
+            <span class="sub-label">Pacote 1kg</span>
+            <span class="sub-preco">R$ 8,99</span>
+            <input type="number" id="qtd-feijao-un" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Feijão 1kg', 8.99, 'qtd-feijao-un', 'un')">Adicionar</button>
+          </div>
+          <div class="sub-linha">
+            <span class="sub-label">Fardo (10 pacotes)</span>
+            <span class="sub-preco">R$ 79,99</span>
+            <input type="number" id="qtd-feijao-fardo" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Feijão Fardo', 79.99, 'qtd-feijao-fardo', 'un')">Adicionar</button>
+          </div>
+        </div>
+
+        <div id="sub-macarrao" class="submenu-expandido">
+          <div class="submenu-titulo">🍝 Macarrão — escolha a marca</div>
+          <div class="sub-linha">
+            <span class="sub-label">Barilla</span>
+            <span class="sub-preco">R$ 5,99</span>
+            <input type="number" id="qtd-barilla" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Macarrão Barilla', 5.99, 'qtd-barilla', 'un')">Adicionar</button>
+          </div>
+          <div class="sub-linha">
+            <span class="sub-label">Renata</span>
+            <span class="sub-preco">R$ 3,99</span>
+            <input type="number" id="qtd-renata" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Macarrão Renata', 3.99, 'qtd-renata', 'un')">Adicionar</button>
+          </div>
+          <div class="sub-linha">
+            <span class="sub-label">Vitarella</span>
+            <span class="sub-preco">R$ 3,49</span>
+            <input type="number" id="qtd-vitarella" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Macarrão Vitarella', 3.49, 'qtd-vitarella', 'un')">Adicionar</button>
+          </div>
+        </div>
+
+        <div id="sub-queijo" class="submenu-expandido">
+          <div class="submenu-titulo">🧀 Queijo — como deseja comprar?</div>
+          <div class="sub-linha">
+            <span class="sub-label">Por kg (fatiado/peça)</span>
+            <span class="sub-preco">R$ 39,99/kg</span>
+            <input type="number" id="qtd-queijo-kg" min="0.1" step="0.1" value="1">
+            <button onclick="adicionarItem('Queijo', 39.99, 'qtd-queijo-kg', 'kg')">Adicionar</button>
+          </div>
+          <div class="sub-linha">
+            <span class="sub-label">Pacote fatiado 150g</span>
+            <span class="sub-preco">R$ 7,99</span>
+            <input type="number" id="qtd-queijo-pac" min="1" step="1" value="1">
+            <button onclick="adicionarItem('Queijo fatiado 150g', 7.99, 'qtd-queijo-pac', 'un')">Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEBIDAS -->
+      <div id="bebidas" class="secao-produtos">
+        <h2>Bebidas</h2>
+        <p class="subtitulo">Água, sucos, refrigerantes e muito mais</p>
+        <div class="produtos-grid">
+
+          <div class="produto-card">
+            <div class="produto-emoji">💧</div>
+            <div class="produto-nome">Água Mineral</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 2,49/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-agua" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Água Mineral', 2.49, 'qtd-agua', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🥤</div>
+            <div class="produto-nome">Refrigerante 2L</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 7,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-refri" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Refrigerante 2L', 7.99, 'qtd-refri', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🧃</div>
+            <div class="produto-nome">Suco Caixinha</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 3,49/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-suco" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Suco Caixinha', 3.49, 'qtd-suco', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🍺</div>
+            <div class="produto-nome">Cerveja Lata</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 4,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-cerveja" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Cerveja Lata', 4.99, 'qtd-cerveja', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🍷</div>
+            <div class="produto-nome">Vinho</div>
+            <div class="produto-desc">Por garrafa</div>
+            <div class="produto-preco">R$ 34,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-vinho" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Vinho', 34.99, 'qtd-vinho', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">☕</div>
+            <div class="produto-nome">Café 500g</div>
+            <div class="produto-desc">Por pacote</div>
+            <div class="produto-preco">R$ 12,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-cafe" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Café 500g', 12.99, 'qtd-cafe', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">⚡</div>
+            <div class="produto-nome">Energético</div>
+            <div class="produto-desc">Por lata</div>
+            <div class="produto-preco">R$ 8,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-energetico" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Energético', 8.99, 'qtd-energetico', 'un')">+</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- LIMPEZA -->
+      <div id="limpeza" class="secao-produtos">
+        <h2>Limpeza</h2>
+        <p class="subtitulo">Tudo para manter sua casa limpa</p>
+        <div class="produtos-grid">
+
+          <div class="produto-card">
+            <div class="produto-emoji">🧴</div>
+            <div class="produto-nome">Detergente</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 2,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-detergente" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Detergente', 2.99, 'qtd-detergente', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🫧</div>
+            <div class="produto-nome">Sabão em Pó</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 14,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-sabao" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Sabão em Pó', 14.99, 'qtd-sabao', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">👕</div>
+            <div class="produto-nome">Amaciante 2L</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 9,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-amaciante" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Amaciante 2L', 9.99, 'qtd-amaciante', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🪣</div>
+            <div class="produto-nome">Água Sanitária</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 5,49/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-sanitaria" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Água Sanitária', 5.49, 'qtd-sanitaria', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🧹</div>
+            <div class="produto-nome">Desinfetante</div>
+            <div class="produto-desc">Por unidade</div>
+            <div class="produto-preco">R$ 7,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-desinfetante" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Desinfetante', 7.99, 'qtd-desinfetante', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🧽</div>
+            <div class="produto-nome">Esponja de Louça</div>
+            <div class="produto-desc">Por pacote</div>
+            <div class="produto-preco">R$ 3,49/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-esponja" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Esponja de Louça', 3.49, 'qtd-esponja', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🧻</div>
+            <div class="produto-nome">Papel Higiênico</div>
+            <div class="produto-desc">Por pacote</div>
+            <div class="produto-preco">R$ 19,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-papel" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Papel Higiênico', 19.99, 'qtd-papel', 'un')">+</button>
+            </div>
+          </div>
+
+          <div class="produto-card">
+            <div class="produto-emoji">🪣</div>
+            <div class="produto-nome">Papel Toalha</div>
+            <div class="produto-desc">Por pacote</div>
+            <div class="produto-preco">R$ 8,99/un</div>
+            <div class="produto-acao">
+              <input type="number" id="qtd-papel-toalha" min="1" step="1" value="1">
+              <button class="btn-add" onclick="adicionarItem('Papel Toalha', 8.99, 'qtd-papel-toalha', 'un')">+</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PAINEL CARRINHO -->
+    <div class="painel-carrinho" id="painel-carrinho">
+      <div class="carrinho-header">
+        <h3>🛒 Meu Carrinho</h3>
+        <p id="carrinho-subtitulo">Nenhum item ainda</p>
+      </div>
+      <div class="carrinho-itens" id="carrinho-itens">
+        <div class="carrinho-vazio">
+          <div class="icon-vazio">🛒</div>
+          <p>Seu carrinho está vazio.<br>Adicione produtos para começar!</p>
+        </div>
+      </div>
+      <div class="carrinho-rodape">
+        <div class="resumo-linha"><span>Subtotal</span><span id="subtotal-val">R$ 0,00</span></div>
+        <div class="resumo-linha"><span>Itens</span><span id="qtd-itens-val">0 itens</span></div>
+        <div class="resumo-total"><span>Total</span><span id="total-valor">R$ 0,00</span></div>
+        <button class="btn-finalizar" onclick="finalizarCompra()">Finalizar Compra →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL DE SUCESSO -->
+<div id="tela-sucesso">
+  <div class="sucesso-card">
+    <div class="sucesso-icon">🎉</div>
+    <h2>Compra Finalizada!</h2>
+    <p>Obrigado por comprar no FreshMart.</p>
+    <p>Seu pedido foi registrado com sucesso.</p>
+    <div class="sucesso-total" id="sucesso-total">R$ 0,00</div>
+    <div class="sucesso-btns">
+      <button class="btn-nova-compra" onclick="novaCompra()">Nova Compra</button>
+      <button class="btn-voltar-inicio" onclick="voltarInicioDoSucesso()">Ir ao Início</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let carrinho = [];
+  let totalValor = 0;
+
+  function entrarNaLoja() {
+    document.getElementById('pagina-inicial').style.display = 'none';
+    document.getElementById('pagina-loja').style.display = 'block';
+  }
+
+  function voltarInicio() {
+    document.getElementById('pagina-loja').style.display = 'none';
+    document.getElementById('pagina-inicial').style.display = 'flex';
+  }
+
+  function mostrarCategoria(id, botao) {
+    document.querySelectorAll('.secao-produtos').forEach(function(s) { s.classList.remove('visivel'); });
+    document.querySelectorAll('.btn-cat').forEach(function(b) { b.classList.remove('ativo'); });
+    document.getElementById('boas-vindas-loja').style.display = 'none';
+    document.getElementById(id).classList.add('visivel');
+    botao.classList.add('ativo');
+  }
+
+  function toggleSubmenu(id) {
+    document.getElementById(id).classList.toggle('visivel');
+  }
+
+  function adicionarItem(nome, preco, inputId, tipo) {
+    let quantidade = parseFloat(document.getElementById(inputId).value);
+    if (isNaN(quantidade) || quantidade <= 0) {
+      alert('Digite uma quantidade válida!');
+      return;
+    }
+    let subtotal = preco * quantidade;
+    totalValor += subtotal;
+    carrinho.push({ nome: nome, quantidade: quantidade, tipo: tipo, subtotal: subtotal });
+    atualizarCarrinho();
+  }
+
+  function atualizarCarrinho() {
+    let container = document.getElementById('carrinho-itens');
+    container.innerHTML = '';
+
+    if (carrinho.length === 0) {
+      container.innerHTML = '<div class="carrinho-vazio"><div class="icon-vazio">🛒</div><p>Seu carrinho está vazio.<br>Adicione produtos para começar!</p></div>';
+      document.getElementById('carrinho-subtitulo').textContent = 'Nenhum item ainda';
+    } else {
+      carrinho.forEach(function(item, index) {
+        let div = document.createElement('div');
+        div.className = 'item-carrinho';
+        div.innerHTML =
+          '<div class="item-info">' +
+            '<div class="item-nome">' + item.nome + '</div>' +
+            '<div class="item-qtd">' + item.quantidade + ' ' + item.tipo + '</div>' +
+          '</div>' +
+          '<span class="item-preco">R$ ' + item.subtotal.toFixed(2).replace('.', ',') + '</span>' +
+          '<button class="item-remover" onclick="removerItem(' + index + ')">✕</button>';
+        container.appendChild(div);
+      });
+      document.getElementById('carrinho-subtitulo').textContent = carrinho.length + (carrinho.length === 1 ? ' item' : ' itens') + ' no carrinho';
+    }
+
+    let totalStr = 'R$ ' + totalValor.toFixed(2).replace('.', ',');
+    document.getElementById('total-valor').textContent = totalStr;
+    document.getElementById('subtotal-val').textContent = totalStr;
+    document.getElementById('qtd-itens-val').textContent = carrinho.length + (carrinho.length === 1 ? ' item' : ' itens');
+    document.getElementById('badge-count').textContent = carrinho.length;
+  }
+
+  function removerItem(index) {
+    totalValor -= carrinho[index].subtotal;
+    carrinho.splice(index, 1);
+    atualizarCarrinho();
+  }
+
+  function rolarCarrinho() {
+    document.getElementById('painel-carrinho').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function finalizarCompra() {
+    if (carrinho.length === 0) {
+      alert('Adicione pelo menos um produto antes de finalizar!');
+      return;
+    }
+    document.getElementById('sucesso-total').textContent = 'R$ ' + totalValor.toFixed(2).replace('.', ',');
+    document.getElementById('tela-sucesso').classList.add('visivel');
+  }
+
+  function novaCompra() {
+    carrinho = [];
+    totalValor = 0;
+    atualizarCarrinho();
+    document.getElementById('tela-sucesso').classList.remove('visivel');
+  }
+
+  function voltarInicioDoSucesso() {
+    carrinho = [];
+    totalValor = 0;
+    atualizarCarrinho();
+    document.getElementById('tela-sucesso').classList.remove('visivel');
+    voltarInicio();
+  }
+</script>
+
+</body>
+</html>

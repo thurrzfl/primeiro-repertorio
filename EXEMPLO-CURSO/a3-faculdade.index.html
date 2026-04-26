@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supermercado Virtual</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+    }
+
+    header p {
+      font-size: 14px;
+      margin-top: 5px;
+      opacity: 0.85;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    /* MENU DE CATEGORIAS */
+    .categorias {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .btn-categoria {
+      flex: 1;
+      padding: 15px;
+      font-size: 16px;
+      border: 2px solid #2e7d32;
+      background-color: white;
+      color: #2e7d32;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn-categoria:hover,
+    .btn-categoria.ativo {
+      background-color: #2e7d32;
+      color: white;
+    }
+
+    /* LISTA DE PRODUTOS */
+    .secao-produtos {
+      display: none;
+    }
+
+    .secao-produtos.visivel {
+      display: block;
+    }
+
+    .secao-produtos h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #2e7d32;
+      border-bottom: 2px solid #2e7d32;
+      padding-bottom: 8px;
+    }
+
+    .produto {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .produto-info {
+      flex: 1;
+    }
+
+    .produto-info strong {
+      font-size: 16px;
+    }
+
+    .produto-info span {
+      display: block;
+      font-size: 13px;
+      color: #777;
+      margin-top: 3px;
+    }
+
+    .produto-preco {
+      font-size: 16px;
+      font-weight: bold;
+      color: #2e7d32;
+      min-width: 90px;
+      text-align: right;
+    }
+
+    .produto-acao {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .produto-acao input {
+      width: 55px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .produto-acao button {
+      padding: 8px 14px;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .produto-acao button:hover {
+      background-color: #1b5e20;
+    }
+
+    /* SUBMENU (arroz, feijão, ovos, etc) */
+    .submenu {
+      background-color: #f9f9f9;
+      border: 1px dashed #ccc;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .submenu.visivel {
+      display: block;
+    }
+
+    .submenu p {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .submenu-opcao {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .submenu-opcao label {
+      flex: 1;
+      font-size: 14px;
+    }
+
+    .submenu-opcao span {
+      font-weight: bold;
+      color: #2e7d32;
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .submenu-opcao input {
+      width: 55px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .submenu-opcao button {
+      padding: 6px 12px;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .submenu-opcao button:hover {
+      background-color: #1b5e20;
+    }
+
+    /* CARRINHO */
+    .carrinho {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .carrinho h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #333;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 8px;
+    }
+
+    .carrinho-vazio {
+      color: #aaa;
+      font-size: 14px;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .carrinho-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+
+    .carrinho-item button {
+      background: none;
+      border: none;
+      color: #e53935;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .carrinho-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .carrinho-total span:last-child {
+      color: #2e7d32;
+    }
+
+    .btn-finalizar {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn-finalizar:hover {
+      background-color: #1b5e20;
+    }
+
+    /* MENSAGEM DE CONFIRMAÇÃO */
+    .mensagem {
+      display: none;
+      background-color: #e8f5e9;
+      border: 1px solid #2e7d32;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .mensagem h3 {
+      color: #2e7d32;
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .mensagem p {
+      font-size: 15px;
+      color: #555;
+    }
+
+    .mensagem button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🛒 Supermercado Virtual</h1>
+    <p>Escolha seus produtos e monte seu carrinho</p>
+  </header>
+
+  <div class="container">
+
+    <!-- CATEGORIAS -->
+    <div class="categorias">
+      <button class="btn-categoria" onclick="mostrarCategoria('alimentos', this)">🥦 Alimentos</button>
+      <button class="btn-categoria" onclick="mostrarCategoria('bebidas', this)">🥤 Bebidas</button>
+      <button class="btn-categoria" onclick="mostrarCategoria('limpeza', this)">🧹 Limpeza</button>
+    </div>
+
+    <!-- ALIMENTOS -->
+    <div id="alimentos" class="secao-produtos">
+      <h2>🥦 Alimentos</h2>
+
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Banana</strong>
+          <span>Preço por kg</span>
+        </div>
+        <div class="produto-preco">R$ 3,99/kg</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-banana" min="0.1" step="0.1" placeholder="kg" value="1">
+          <button onclick="adicionarItem('Banana', 3.99, 'qtd-banana', 'kg')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Maçã</strong>
+          <span>Preço por kg</span>
+        </div>
+        <div class="produto-preco">R$ 6,99/kg</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-maca" min="0.1" step="0.1" placeholder="kg" value="1">
+          <button onclick="adicionarItem('Maçã', 6.99, 'qtd-maca', 'kg')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Laranja</strong>
+          <span>Preço por kg</span>
+        </div>
+        <div class="produto-preco">R$ 4,49/kg</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-laranja" min="0.1" step="0.1" placeholder="kg" value="1">
+          <button onclick="adicionarItem('Laranja', 4.49, 'qtd-laranja', 'kg')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Alface</strong>
+          <span>Por unidade</span>
+        </div>
+        <div class="produto-preco">R$ 2,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-alface" min="1" step="1" placeholder="un" value="1">
+          <button onclick="adicionarItem('Alface', 2.99, 'qtd-alface', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Tomate</strong>
+          <span>Preço por kg</span>
+        </div>
+        <div class="produto-preco">R$ 4,99/kg</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-tomate" min="0.1" step="0.1" placeholder="kg" value="1">
+          <button onclick="adicionarItem('Tomate', 4.99, 'qtd-tomate', 'kg')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Frango</strong>
+          <span>Preço por kg</span>
+        </div>
+        <div class="produto-preco">R$ 12,99/kg</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-frango" min="0.1" step="0.1" placeholder="kg" value="1">
+          <button onclick="adicionarItem('Frango', 12.99, 'qtd-frango', 'kg')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Carne Moída</strong>
+          <span>Preço por kg</span>
+        </div>
+        <div class="produto-preco">R$ 22,99/kg</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-carne" min="0.1" step="0.1" placeholder="kg" value="1">
+          <button onclick="adicionarItem('Carne Moída', 22.99, 'qtd-carne', 'kg')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Leite</strong>
+          <span>Por unidade (1L)</span>
+        </div>
+        <div class="produto-preco">R$ 4,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-leite" min="1" step="1" placeholder="un" value="1">
+          <button onclick="adicionarItem('Leite', 4.99, 'qtd-leite', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <!-- OVOS com submenu -->
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Ovos</strong>
+          <span>Unidade ou bandeja</span>
+        </div>
+        <div class="produto-preco">a partir R$ 0,79</div>
+        <div class="produto-acao">
+          <button onclick="toggleSubmenu('submenu-ovos')">Escolher</button>
+        </div>
+      </div>
+      <div id="submenu-ovos" class="submenu">
+        <p>Escolha como deseja comprar os ovos:</p>
+        <div class="submenu-opcao">
+          <label>Por unidade</label>
+          <span>R$ 0,79/un</span>
+          <input type="number" id="qtd-ovo-un" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Ovos (unidade)', 0.79, 'qtd-ovo-un', 'un')">Adicionar</button>
+        </div>
+        <div class="submenu-opcao">
+          <label>Bandeja com 12</label>
+          <span>R$ 8,49</span>
+          <input type="number" id="qtd-ovo-12" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Ovos - Bandeja 12', 8.49, 'qtd-ovo-12', 'un')">Adicionar</button>
+        </div>
+        <div class="submenu-opcao">
+          <label>Bandeja com 30</label>
+          <span>R$ 19,99</span>
+          <input type="number" id="qtd-ovo-30" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Ovos - Bandeja 30', 19.99, 'qtd-ovo-30', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <!-- ARROZ com submenu -->
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Arroz</strong>
+          <span>Unidade ou fardo</span>
+        </div>
+        <div class="produto-preco">a partir R$ 24,99</div>
+        <div class="produto-acao">
+          <button onclick="toggleSubmenu('submenu-arroz')">Escolher</button>
+        </div>
+      </div>
+      <div id="submenu-arroz" class="submenu">
+        <p>Escolha como deseja comprar o arroz:</p>
+        <div class="submenu-opcao">
+          <label>Saco 5kg</label>
+          <span>R$ 24,99</span>
+          <input type="number" id="qtd-arroz-un" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Arroz (saco 5kg)', 24.99, 'qtd-arroz-un', 'un')">Adicionar</button>
+        </div>
+        <div class="submenu-opcao">
+          <label>Fardo (10 sacos)</label>
+          <span>R$ 219,99</span>
+          <input type="number" id="qtd-arroz-fardo" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Arroz - Fardo', 219.99, 'qtd-arroz-fardo', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <!-- FEIJÃO com submenu -->
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Feijão</strong>
+          <span>Unidade ou fardo</span>
+        </div>
+        <div class="produto-preco">a partir R$ 8,99</div>
+        <div class="produto-acao">
+          <button onclick="toggleSubmenu('submenu-feijao')">Escolher</button>
+        </div>
+      </div>
+      <div id="submenu-feijao" class="submenu">
+        <p>Escolha como deseja comprar o feijão:</p>
+        <div class="submenu-opcao">
+          <label>Pacote 1kg</label>
+          <span>R$ 8,99</span>
+          <input type="number" id="qtd-feijao-un" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Feijão (1kg)', 8.99, 'qtd-feijao-un', 'un')">Adicionar</button>
+        </div>
+        <div class="submenu-opcao">
+          <label>Fardo (10 pacotes)</label>
+          <span>R$ 79,99</span>
+          <input type="number" id="qtd-feijao-fardo" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Feijão - Fardo', 79.99, 'qtd-feijao-fardo', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <!-- MACARRÃO com submenu -->
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Macarrão</strong>
+          <span>Escolha a marca</span>
+        </div>
+        <div class="produto-preco">a partir R$ 3,49</div>
+        <div class="produto-acao">
+          <button onclick="toggleSubmenu('submenu-macarrao')">Escolher</button>
+        </div>
+      </div>
+      <div id="submenu-macarrao" class="submenu">
+        <p>Escolha a marca do macarrão:</p>
+        <div class="submenu-opcao">
+          <label>Barilla</label>
+          <span>R$ 5,99</span>
+          <input type="number" id="qtd-barilla" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Macarrão Barilla', 5.99, 'qtd-barilla', 'un')">Adicionar</button>
+        </div>
+        <div class="submenu-opcao">
+          <label>Renata</label>
+          <span>R$ 3,99</span>
+          <input type="number" id="qtd-renata" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Macarrão Renata', 3.99, 'qtd-renata', 'un')">Adicionar</button>
+        </div>
+        <div class="submenu-opcao">
+          <label>Vitarella</label>
+          <span>R$ 3,49</span>
+          <input type="number" id="qtd-vitarella" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Macarrão Vitarella', 3.49, 'qtd-vitarella', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <!-- QUEIJO com submenu -->
+      <div class="produto">
+        <div class="produto-info">
+          <strong>Queijo</strong>
+          <span>Por kg ou pacote</span>
+        </div>
+        <div class="produto-preco">a partir R$ 7,99</div>
+        <div class="produto-acao">
+          <button onclick="toggleSubmenu('submenu-queijo')">Escolher</button>
+        </div>
+      </div>
+      <div id="submenu-queijo" class="submenu">
+        <p>Escolha como deseja comprar o queijo:</p>
+        <div class="submenu-opcao">
+          <label>Por kg (fatiado/peça)</label>
+          <span>R$ 39,99/kg</span>
+          <input type="number" id="qtd-queijo-kg" min="0.1" step="0.1" value="1">
+          <button onclick="adicionarItem('Queijo', 39.99, 'qtd-queijo-kg', 'kg')">Adicionar</button>
+        </div>
+        <div class="submenu-opcao">
+          <label>Pacote fatiado 150g</label>
+          <span>R$ 7,99</span>
+          <input type="number" id="qtd-queijo-pac" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Queijo fatiado 150g', 7.99, 'qtd-queijo-pac', 'un')">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEBIDAS -->
+    <div id="bebidas" class="secao-produtos">
+      <h2>🥤 Bebidas</h2>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Água Mineral</strong><span>Por unidade</span></div>
+        <div class="produto-preco">R$ 2,49/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-agua" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Água Mineral', 2.49, 'qtd-agua', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Refrigerante 2L</strong><span>Por unidade</span></div>
+        <div class="produto-preco">R$ 7,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-refri" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Refrigerante 2L', 7.99, 'qtd-refri', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Suco Caixinha</strong><span>Por unidade</span></div>
+        <div class="produto-preco">R$ 3,49/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-suco" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Suco Caixinha', 3.49, 'qtd-suco', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Cerveja Lata</strong><span>Por unidade</span></div>
+        <div class="produto-preco">R$ 4,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-cerveja" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Cerveja Lata', 4.99, 'qtd-cerveja', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Vinho</strong><span>Por garrafa</span></div>
+        <div class="produto-preco">R$ 34,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-vinho" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Vinho', 34.99, 'qtd-vinho', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Café 500g</strong><span>Por pacote</span></div>
+        <div class="produto-preco">R$ 12,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-cafe" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Café 500g', 12.99, 'qtd-cafe', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Energético</strong><span>Por lata</span></div>
+        <div class="produto-preco">R$ 8,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-energetico" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Energético', 8.99, 'qtd-energetico', 'un')">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIMPEZA -->
+    <div id="limpeza" class="secao-produtos">
+      <h2>🧹 Produtos de Limpeza</h2>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Detergente</strong><span>Por unidade</span></div>
+        <div class="produto-preco">R$ 2,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-detergente" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Detergente', 2.99, 'qtd-detergente', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Sabão em Pó</strong><span>Por unidade</span></div>
+        <div class="produto-preco">R$ 14,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-sabao" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Sabão em Pó', 14.99, 'qtd-sabao', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Amaciante 2L</strong><span>Por unidade</span></div>
+        <div class="produto-preco">R$ 9,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-amaciante" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Amaciante 2L', 9.99, 'qtd-amaciante', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Água Sanitária</strong><span>Por unidade</span></div>
+        <div class="produto-preco">R$ 5,49/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-sanitaria" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Água Sanitária', 5.49, 'qtd-sanitaria', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Desinfetante</strong><span>Por unidade</span></div>
+        <div class="produto-preco">R$ 7,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-desinfetante" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Desinfetante', 7.99, 'qtd-desinfetante', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Esponja de Louça</strong><span>Por pacote</span></div>
+        <div class="produto-preco">R$ 3,49/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-esponja" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Esponja de Louça', 3.49, 'qtd-esponja', 'un')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div class="produto-info"><strong>Papel Higiênico</strong><span>Por pacote</span></div>
+        <div class="produto-preco">R$ 19,99/un</div>
+        <div class="produto-acao">
+          <input type="number" id="qtd-papel" min="1" step="1" value="1">
+          <button onclick="adicionarItem('Papel Higiênico', 19.99, 'qtd-papel', 'un')">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARRINHO -->
+    <div class="carrinho">
+      <h2>🛒 Carrinho</h2>
+      <div id="carrinho-itens">
+        <p class="carrinho-vazio">Nenhum item adicionado ainda.</p>
+      </div>
+      <div class="carrinho-total">
+        <span>Total:</span>
+        <span id="total-valor">R$ 0,00</span>
+      </div>
+      <button class="btn-finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+    </div>
+
+    <!-- MENSAGEM FINAL -->
+    <div id="mensagem-final" class="mensagem">
+      <h3>✅ Compra finalizada!</h3>
+      <p id="mensagem-texto"></p>
+      <button onclick="novaCompra()">Fazer nova compra</button>
+    </div>
+
+  </div>
+
+  <script>
+    // Guarda os itens do carrinho
+    let carrinho = [];
+    let totalValor = 0;
+
+    // Mostra a categoria clicada e esconde as outras
+    function mostrarCategoria(id, botao) {
+      document.querySelectorAll('.secao-produtos').forEach(function(secao) {
+        secao.classList.remove('visivel');
+      });
+      document.querySelectorAll('.btn-categoria').forEach(function(btn) {
+        btn.classList.remove('ativo');
+      });
+      document.getElementById(id).classList.add('visivel');
+      botao.classList.add('ativo');
+    }
+
+    // Abre e fecha o submenu (ovos, arroz, feijão, etc)
+    function toggleSubmenu(id) {
+      let submenu = document.getElementById(id);
+      submenu.classList.toggle('visivel');
+    }
+
+    // Adiciona um item no carrinho
+    function adicionarItem(nome, preco, inputId, tipo) {
+      let quantidade = parseFloat(document.getElementById(inputId).value);
+
+      if (isNaN(quantidade) || quantidade <= 0) {
+        alert('Digite uma quantidade válida!');
+        return;
+      }
+
+      let subtotal = preco * quantidade;
+      totalValor += subtotal;
+
+      carrinho.push({
+        nome: nome,
+        quantidade: quantidade,
+        tipo: tipo,
+        subtotal: subtotal
+      });
+
+      atualizarCarrinho();
+    }
+
+    // Atualiza a lista do carrinho na tela
+    function atualizarCarrinho() {
+      let container = document.getElementById('carrinho-itens');
+      container.innerHTML = '';
+
+      if (carrinho.length === 0) {
+        container.innerHTML = '<p class="carrinho-vazio">Nenhum item adicionado ainda.</p>';
+      } else {
+        carrinho.forEach(function(item, index) {
+          let div = document.createElement('div');
+          div.className = 'carrinho-item';
+          div.innerHTML =
+            '<span>' + item.nome + ' (' + item.quantidade + ' ' + item.tipo + ')</span>' +
+            '<span>R$ ' + item.subtotal.toFixed(2).replace('.', ',') + '</span>' +
+            '<button onclick="removerItem(' + index + ')">✕</button>';
+          container.appendChild(div);
+        });
+      }
+
+      document.getElementById('total-valor').textContent =
+        'R$ ' + totalValor.toFixed(2).replace('.', ',');
+    }
+
+    // Remove um item do carrinho
+    function removerItem(index) {
+      totalValor -= carrinho[index].subtotal;
+      carrinho.splice(index, 1);
+      atualizarCarrinho();
+    }
+
+    // Finaliza a compra
+    function finalizarCompra() {
+      if (carrinho.length === 0) {
+        alert('Adicione pelo menos um produto antes de finalizar!');
+        return;
+      }
+
+      document.getElementById('mensagem-texto').textContent =
+        'Obrigado por comprar conosco! Total da sua compra: R$ ' +
+        totalValor.toFixed(2).replace('.', ',');
+
+      document.getElementById('mensagem-final').style.display = 'block';
+      document.querySelector('.carrinho').style.display = 'none';
+    }
+
+    // Recomeça a compra
+    function novaCompra() {
+      carrinho = [];
+      totalValor = 0;
+      atualizarCarrinho();
+      document.getElementById('mensagem-final').style.display = 'none';
+      document.querySelector('.carrinho').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
